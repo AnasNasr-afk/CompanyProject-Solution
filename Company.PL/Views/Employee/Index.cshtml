@@ -1,0 +1,95 @@
+﻿@using Company.DAL.Models
+@model IEnumerable<Employee>
+
+@{
+    ViewData["Title"] = "Employee Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var totalEmployees = Model.Count();
+
+}
+<h2 class="mb-4 fw-bold">Employee Dashboard</h2>
+
+<!-- Summary Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="bg-primary text-white rounded-3 shadow-sm p-4 text-center">
+            <h2 class="display-6">@ViewBag.TotalEmployees</h2>
+            <p class="mb-0">Total Employees</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Actions Toolbar (Search Removed) -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center py-3 px-4 bg-light rounded-3">
+        <h5 class="mb-0 text-secondary fw-semibold">
+            <i class="fas fa-user-cog me-2 text-primary"></i> Manage Employees
+        </h5>
+        <a asp-action="Create" class="btn btn-success d-flex align-items-center px-4 py-2 rounded-pill shadow-sm">
+            <i class="fas fa-user-plus me-2"></i> Add Employee
+        </a>
+    </div>
+</div>
+
+
+<!-- Employee Table -->
+@if (Model.Any())
+{
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Date Hired</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var emp in Model)
+                {
+                    <tr>
+                        <td>@emp.Name</td>
+                        <td>@emp.Address</td>
+                        <td>@emp.DateOfEmployment.ToShortDateString()</td>
+                       
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-action="Details" asp-route-id="@emp.Id"><i class="fas fa-eye me-1"></i>View</a></li>
+                                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@emp.Id"><i class="fas fa-edit me-1"></i>Edit</a></li>
+                                    <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@emp.Id"><i class="fas fa-trash-alt me-1"></i>Delete</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+else
+{
+    <div class="alert alert-warning text-center mt-4">
+        <h5>No employee records found.</h5>
+    </div>
+}

@@ -1,0 +1,46 @@
+﻿@using Company.DAL.Models
+@model Employee
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete Employee</h1>
+<br />
+<br />
+<form asp-action="Delete" id="deleteForm" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="col-form-label">Employee Name</label>
+        <input readonly asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address" class="col-form-label">Address</label>
+        <input readonly asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateOfEmployment" class="col-form-label">Date of Employment</label>
+        <input readonly asp-for="DateOfEmployment" class="form-control" />
+    </div>
+
+    <!-- Confirmation button with an onclick event -->
+    <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+        <i class="fas fa-trash"></i> Delete
+    </button>
+    <a asp-controller="Employee" asp-action="Index" class="btn btn-light">Back To List</a>
+</form>
+
+<script type="text/javascript">
+    // JavaScript function to confirm delete
+    function confirmDelete() {
+        // Display a confirmation popup
+        const confirmAction = confirm("Are you sure you want to delete this employee?");
+        if (confirmAction) {
+            // If confirmed, submit the form
+            document.getElementById("deleteForm").submit();
+        } else {
+            // If canceled, do nothing
+            return false;
+        }
+    }
+</script>

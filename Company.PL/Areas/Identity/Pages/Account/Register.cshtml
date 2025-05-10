@@ -1,0 +1,89 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+}
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="card shadow border-0" style="max-width: 500px; width: 100%;">
+        <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Create Account</h2>
+                <p class="text-muted">Join us today — it takes less than a minute.</p>
+            </div>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Input.FirstName" class="form-label">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control" autocomplete="given-name" placeholder="First name" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.LastName" class="form-label">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control" autocomplete="family-name" placeholder="Last name" />
+                        <span asp-validation-for="Input.LastName" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">Email address</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Create a password" />
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Confirm your password" />
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="btn btn-success w-100 btn-lg">Register</button>
+
+                <div class="text-center mt-3">
+                    <small>Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log in</a></small>
+                </div>
+
+                <hr />
+
+                @if (Model.ExternalLogins?.Count > 0)
+                {
+                    <div class="text-center">
+                        <p class="mb-2">Or sign up with</p>
+                        <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-secondary w-100 mb-2" name="provider" value="@provider.Name">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> @provider.DisplayName
+                                </button>
+                            }
+                        </form>
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
